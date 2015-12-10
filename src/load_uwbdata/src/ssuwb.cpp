@@ -149,7 +149,6 @@ void usage(void)
 
 int uwb(int destNodeId)
 {
-    //printf("enter uwb\n");
         // Determine range to a radio. May also get data and scan packets.
         if (rcmRangeTo(destNodeId, RCM_ANTENNAMODE_TXA_RXA, 0, NULL,
                 &rangeInfo, &dataInfo, &scanInfo, &fullScanInfo) == 0)

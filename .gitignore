@@ -4,3 +4,5 @@ devel
 .catkin_tools/
 .catkin_workspace
 generate
+.rosinstall
+.rosinstall.bak

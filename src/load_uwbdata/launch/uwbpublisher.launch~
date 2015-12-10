@@ -28,7 +28,7 @@
 	</node>
 
 	<node name="datarecord" pkg="rosbag" type="record" 
-		args="-o $(find load_uwbdata)/bag/dis /uwb_distance /mocap/pose">
+		args="-o $(find load_uwbdata)/bag/dis /myPublisher/uwb_distance /viconXbee_node/mocap/pose">
 	</node>
 	
 	<include file="$(find viconXbee)/launch/viconXbee.launch"/>
