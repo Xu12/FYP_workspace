@@ -1,15 +1,28 @@
 <?xml version="1.0"?>
 <launch>
-	<node name="myPublisher" pkg="load_uwbdata" type="myPublisher" output="screen">
 
-		<param name="node0id" value="101" />
+	<node name="uwb_node" pkg="load_uwbdata" type="myPublisher" output="screen">
+		
+        <param name="device" value="/dev/ttyACM0" />
+		<param name="port" value="usb" />
+	
+        <rosparam param="node_id">
+                    [101, 102, 105, 106]
+        </rosparam>
+
+        <rosparam param="node_pos">
+                    [-3.000, -3.000, -1.710,
+                      3.000, -3.000, -1.210,
+                      3.000,  3.000, -1.310,
+                     -3.000,  3.000, -1.310]
+        </rosparam>
+
+<!--	
+        <param name="node0id" value="101" />
 		<param name="node1id" value="102" />
 		<param name="node2id" value="105" />
 		<param name="node3id" value="106" />
 
-		<param name="device" value="/dev/ttyACM0" />
-		<param name="port" value="usb" />
-	
 		<param name="node0_posx" value="-3.000" />
 		<param name="node0_posy" value="-3.000" />
 		<param name="node0_posz" value="-1.710" />
@@ -25,13 +38,19 @@
 		<param name="node3_posx" value="-3.000" />
 		<param name="node3_posy" value="3.000" />
 		<param name="node3_posz" value="-1.310" />
-		
-	</node>
+-->	
+	
+    </node>
 
+<!--
 	<node name="datarecord" pkg="rosbag" type="record" 
-		args="-o $(find load_uwbdata)/bag/dis /myPublisher/uwb_distance /viconXbee_node/mocap/pose">
+		args="-o $(find load_uwbdata)/bag/dis 
+                /myPublisher/uwb_distance 
+                /viconxbee_node/mocap/pose">
 	</node>
 	
-	<include file="$(find viconXbee)/launch/viconXbee.launch"/>
+	<include file="$(find viconxbee)/launch/viconxbee.launch"/>
+    <include file="$(find load_uwbdata)/launch/mavros.launch"/>
+-->
 
 </launch>

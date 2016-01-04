@@ -18,19 +18,24 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    double distance;
-    int node[4];
-    geometry_msgs::Point position;
-
+    double distance;                //distance measured 
+    geometry_msgs::Point position;  //position of uwb anchor 
+    
 
 	ros::init(argc, argv, "myPublisher");
-	ros::NodeHandle n("~");
+	ros::NodeHandle n("~");         //"~" access private parameters
 	ros::Publisher publisher = n.advertise<load_uwbdata::uwbdata> ("uwb_distance", 1);
 
+/*
+    int node[4];
 	n.getParam("node0id", node[0]);
 	n.getParam("node1id", node[1]);
 	n.getParam("node2id", node[2]);
 	n.getParam("node3id", node[3]);
+*/
+
+    std::vector<int> node;
+    n.getParam("node_id", node);
 
 	std::string argv1,argv2;
 	n.getParam("device", argv1);
@@ -38,9 +43,10 @@ int main(int argc, char *argv[])
 	n.getParam("port", argv2);
 	argv[2] = &argv2[0u];
 
-	ssUWB(argv[1],argv[2]);
+    std::vector<double> node_pos;    
+    n.getParam("node_pos", node_pos);
 
-
+/*
 	geometry_msgs::Point node0_pos, node1_pos, node2_pos, node3_pos;
 	n.getParam("node0_posx", node0_pos.x);
 	n.getParam("node0_posy", node0_pos.y);
@@ -54,10 +60,11 @@ int main(int argc, char *argv[])
 	n.getParam("node3_posx", node3_pos.x);
 	n.getParam("node3_posy", node3_pos.y);
 	n.getParam("node3_posz", node3_pos.z);
-
+*/
+    
+    ssUWB(argv[1],argv[2]);     //initialize uwb modules
 
 	int count = 0;
-	
 	while (ros::ok())
 	{
 		for (int i=0; i<4; i++)
@@ -66,21 +73,21 @@ int main(int argc, char *argv[])
 
 			switch(i)
 			{
-				case 0: position.x = node0_pos.x;
-						position.y = node0_pos.y;
-						position.z = node0_pos.z;
+				case 0: position.x = node_pos[0];
+						position.y = node_pos[1];
+						position.z = node_pos[2];
 						break;
-				case 1: position.x = node1_pos.x;
-						position.y = node1_pos.y;
-						position.z = node1_pos.z;
+				case 1: position.x = node_pos[3];
+						position.y = node_pos[4];
+						position.z = node_pos[5];
 						break;
-				case 2: position.x = node2_pos.x;
-						position.y = node2_pos.y;
-						position.z = node2_pos.z;
+				case 2: position.x = node_pos[6];
+						position.y = node_pos[7];
+						position.z = node_pos[8];
 						break;
-				case 3: position.x = node3_pos.x;
-						position.y = node3_pos.y;
-						position.z = node3_pos.z;
+				case 3: position.x = node_pos[9];
+						position.y = node_pos[10];
+						position.z = node_pos[11];
 						break;
 			}
 

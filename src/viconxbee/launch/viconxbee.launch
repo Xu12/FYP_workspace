@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+
+ <!-- viconxbee node -->
+  <node respawn="true" pkg="viconxbee"
+        type="viconxbee_node" name="viconxbee_node" >
+   	<param name="viconSerialPort" type="string" value="/dev/ttyUSB0" />
+	<param name="viconNodeRate" type="string" value="40"/>
+        <param name="viconAsyncMode" type="bool" value="false"/>
+        <param name="viconHandshakingModeEnabled" type="bool" value="false"/>
+  </node>
+
+<!-- viconXbee node 
+  <node respawn="true" pkg="viconxbee"
+        type="viconxbee_node" name="viconxbee_node1" >
+    <param name="viconSerialPort" type="string" value="/dev/ttyUSB1" />
+	<param name="viconNodeRate" type="string" value="20"/>
+  </node>
+-->
+  
+</launch>
