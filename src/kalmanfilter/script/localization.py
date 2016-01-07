@@ -3,8 +3,10 @@ from sslib import *
 from uwbfilter import *
 from load_uwbdata.msg import uwbdata
 from kalmanfilter.msg import state
-from geometry_msgs.msg import Point, Quaternion, Vector3
+from geometry_msgs.msg import Point, Quaternion, Vector3, PointStamped
 from sensor_msgs.msg import Imu
+from std_msgs.msg import Header
+import tf
 
 global q,a,r
 a = array([0,0,0])
@@ -19,8 +21,21 @@ def imucallback(msg):
 
 def estimation(msg):
     uwbdis = msg.distance
-    #need transform to ned frame (lookup, frame_id)
-    uwbanchor = array([msg.position.x, msg.position.y, msg.position.z]) 
+
+    point = PointStamped()
+    point.header = Header()
+    point.header.frame_id = "vicon"
+    point.header.stamp = rospy.Time.now()
+    point.point = msg.position
+    listener = tf.TransformListener()
+    point_tf = listener.transformPoint("ned", point)
+    uwbanchor = array([point_tf.point.x, point_tf.point.y, point_tf.point.z])
+
+#   br = tf.TransformBroadcaster()
+#   br.sendTransform((msg.position.x, msg.position.y, msg.position.z), (0, 0, 0), now, "uwbanchor", "vicon")
+#   listener = tf.TransformListener()
+#   (trans, rot) = listener.lookupTransform('ned', 'uwbanchor', rospy.Time(0))
+#   uwbanchor = array([trans[0], trans[1], trans[2]]) 
     global q,a,r
 
     xe, _ = uwb.locate(xe, Q, 1.0/100, uwbdis, uwbanchor, q, a, r)
@@ -45,11 +60,6 @@ def estimation(msg):
 
 
 if __name__ == '__main__':
-    rospy.init_node('localization')
-    rospy.Subscriber('/uwb_node/uwb_distance', uwbdata, estimation)
-    rospy.Subscriber('/mavros/imu/data', Imu, imucallback)
-    pub = rospy.Publisher('est_state', state, queue_size=0)	
-    
     xe = zeros((1,11))[0]
     xe[2] = 0.27
     xe[6] = 1
@@ -58,12 +68,14 @@ if __name__ == '__main__':
     Q[ 7:9,  7:9] =  0.81*eye(2)
     Q[  9 ,   9 ] =  900
     Q[ 10 ,  10 ] =  0.000000001
-    #1.28 0.81 400 num = 2
-    #0.98 0.81,900 num =1
-    #0.5 0.01 100 num = 10
     Q = Q*7
     uwb = UWBLocation(1.0/100) 
     uwb.setQ(Q)   
+
+    rospy.init_node('localization')
+    rospy.Subscriber('/uwb_node/uwb_distance', uwbdata, estimation)
+    rospy.Subscriber('/mavros/imu/data', Imu, imucallback)
+    pub = rospy.Publisher('est_state', state, queue_size=0)	
     
     timer = sstimer()
     timer.start()

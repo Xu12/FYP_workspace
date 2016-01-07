@@ -92,13 +92,17 @@ private:
 		uint16_t ignore_all_except_xyzy = (1 << 11) | (7 << 6) | (7 << 3);
 
 		// ENU->NED. Issue #49.
+		float yaw = -tf::getYaw(q)+3.1415926/2;
+		if(yaw>3.1415926)
+			yaw = yaw - 3.1415926 *2;
 		set_position_target_local_ned(stamp.toNSec() / 1000000,
 				MAV_FRAME_LOCAL_NED,
 				ignore_all_except_xyzy,
 				origin.y(), origin.x(), -origin.z(),
 				0.0, 0.0, 0.0,
 				0.0, 0.0, 0.0,
-				tf::getYaw(q), 0.0);
+				yaw, 0.0);
+		//printf("yaw:%f\n",yaw);
 	}
 
 	/* -*- callbacks -*- */

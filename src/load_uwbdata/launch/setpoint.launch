@@ -1,13 +1,16 @@
 <?xml version="1.0"?>
 <launch>
 
+<!--
 	<node name="setpoint_demo" pkg="load_uwbdata" type="setpoint_demo.py"/>
     <node name="viconpose_tf" pkg="load_uwbdata" type="viconpose_tf.py"/>
+-->
+	<node name="setpoint_demo" pkg="load_uwbdata" type="setpoint_tf.py" output="screen"/>
     
     <node name="datarecord" pkg="rosbag" type="record" 
 		    args="-o $(find load_uwbdata)/bag/data -a"/>
 
-    <include file="$(find load_uwbdata)/launch/mavros.launch"/>
+    <include file="$(find mavros)/launch/mavros_tf.launch"/>
     <include file="$(find load_uwbdata)/launch/uwbpublisher.launch"/>
 	<include file="$(find viconxbee)/launch/viconxbee.launch"/>
 
