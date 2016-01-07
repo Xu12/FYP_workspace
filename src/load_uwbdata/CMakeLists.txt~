@@ -181,7 +181,7 @@ add_dependencies(mySubscriber load_uwbdata_generate_messages_cpp)
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 install(FILES
-  publisher_node.launch
+  uwbpublisher.launch
 #   # myfile2
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
