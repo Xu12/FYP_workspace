@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
 <launch>
-<!--
-    <node pkg="kalmanfilter" type="localization.py" name="filter" />
--->
-    <node pkg="rosbag" type="play" name="rosbag_replay" 
-        args="--loop $(find load_uwbdata)/bag/dis_2015-10-06-22-54-55.bag --clock"/>
+    <param name="use_sim_time" value="true" />
 
-    <node pkg="kalmanfilter" type="state_plot.py" name="path_plot" output="screen" />
+    <node pkg="kalmanfilter" type="localization.py" name="filter" output="screen" />
+
+    <node pkg="rosbag" type="play" name="rosbag_replay" 
+        args="--loop $(find load_uwbdata)/bag/data_2016-01-07-13-20-55.bag --clock"/>
+
+    <node pkg="kalmanfilter" type="state_plot.py" name="path_plot" />
 
     <node pkg="tf" type="static_transform_publisher" name="vicon_to_local_origin_tf" 
         args="0 0 0 2.40733333 0 0 vicon local_origin 10" />
