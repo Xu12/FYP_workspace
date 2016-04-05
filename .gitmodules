@@ -1,0 +1,3 @@
+[submodule "src/viconxbee"]
+	path = src/viconxbee
+	url = https://github.com/jeffsanc/viconxbee.git

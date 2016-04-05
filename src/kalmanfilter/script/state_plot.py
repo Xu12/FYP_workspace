@@ -19,14 +19,15 @@ def uwb_callback(msg):
     path_uwb.header = Header()
     path_uwb.header.frame_id = "ned"
     path_uwb.header.stamp = rospy.Time.now()
-    path_uwb.poses.append(msg.state)
+    path_uwb.poses.append(msg)
     pub2.publish(path_uwb)    
 
 if __name__ == '__main__':
     rospy.init_node('plot', anonymous=True)
 
-    rospy.Subscriber("/est_state", state, uwb_callback)
+    rospy.Subscriber("/est_state", PoseStamped, uwb_callback)
     rospy.Subscriber("/viconxbee_node/mocap/pose", PoseStamped, vicon_callback)
+#    rospy.Subscriber("/viconXbee_node/mocap/pose", PoseStamped, vicon_callback)
     pub1 = rospy.Publisher('path_vicon', Path, queue_size=0)
     pub2 = rospy.Publisher('path_uwb', Path, queue_size=0)		
 
