@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
+    <param name="use_sim_time" value="true" />
 
     <include file="$(find load_uwbdata)/launch/razor-pub.launch"/>
     <include file="$(find load_uwbdata)/launch/uwbpublisher.launch"/>
@@ -9,7 +10,7 @@
 
     <node pkg="kalmanfilter" type="localization.py" name="filter" output="screen" />
     <node pkg="kalmanfilter" type="state_plot.py" name="path_plot" />
-<!--
+
     <node name="datarecord" pkg="rosbag" type="record" 
 		    args="-o $(find load_uwbdata)/bag/flytest -a"/>
 
@@ -17,5 +18,5 @@
         args="0 0 0 2.40733333 0 0 vicon local_origin 10" />
     <node pkg="tf" type="static_transform_publisher" name="local_origin_to_ned_tf" 
         args="0 0 0 1.5707963265 0 3.141592653 local_origin ned 10" />
--->
+
 </launch>

@@ -35,10 +35,12 @@ def estimation(msg):
     point.header.stamp = rospy.Time.now()
     point.point = msg.position
 
- 
-    listener.waitForTransform("ned", "vicon", rospy.Time.now(), rospy.Duration(0.05))
-    point_tf = listener.transformPoint("ned", point)
-    uwbanchor = array([point_tf.point.x, point_tf.point.y, point_tf.point.z])
+    try:
+        listener.waitForTransform("ned", "vicon", rospy.Time.now(), rospy.Duration(0.05))
+        point_tf = listener.transformPoint("ned", point)
+        uwbanchor = array([point_tf.point.y, point_tf.point.x, -(point_tf.point.z)])
+    except:
+        print "CAN'T REQUIRE TF"
 
 #    br = tf.TransformBroadcaster()
 #    now =  rospy.Time.now()
