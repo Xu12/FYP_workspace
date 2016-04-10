@@ -36,8 +36,9 @@ def estimation(msg):
     point.point = msg.position
 
  
-    listener.waitForTransform("ned", "vicon", rospy.Time.now(), rospy.Duration(0.05))
-    point_tf = listener.transformPoint("ned", point)
+    listener.waitForTransform("local_origin", "vicon", rospy.Time.now(), rospy.Duration(0.005))
+    point_tf = listener.transformPoint("local_origin", point)
+
     uwbanchor = array([point_tf.point.x, point_tf.point.y, point_tf.point.z])
 
 #    br = tf.TransformBroadcaster()
@@ -69,9 +70,10 @@ def estimation(msg):
         x_msg.pose.position = Point(xe[0], xe[1], xe[2])
         x_msg.pose.orientation = Quaternion(xe[3], xe[4], xe[5], xe[6])
         pub.publish(x_msg)
-    
+        br  = tf.TransformBroadcaster()
+        br.sendTransform(xe[0:3]+array([0,0,0.2]), xe[3:7], x_msg.header.stamp, "UAV", "local_origin")  
         print "estimated position"
-        print "[", "%.3f %.3f %.3f" % (xe[0], xe[1], xe[2]), "]"
+        print "[", "%.3f %.3f %.3f" % (xe[0], xe[1], xe[2]), "]", uwbdis, uwbanchor
 
     
 #    print "Accuracy:", linalg.norm(xe[:,0:3]-p)
@@ -82,8 +84,8 @@ if __name__ == '__main__':
 
     Q[ 0:3,  0:3] =  0.98*eye(3)
     Q[ 3:7,  3:7] =  0.01*eye(4)
-    Q[ 7:9,  7:9] =  0.81*eye(2)
-    Q[  9 ,   9 ] =  900
+    Q[ 7:9,  7:9] =  1.81*eye(2)
+    Q[  9 ,   9 ] =  1000
     Q[ 10 ,  10 ] =  0.000000001
     Q = Q*7
     uwb = UWBLocation(2.0/100) 

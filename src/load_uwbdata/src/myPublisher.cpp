@@ -24,7 +24,8 @@ int main(int argc, char *argv[])
 
 	ros::init(argc, argv, "myPublisher");
 	ros::NodeHandle n("~");         //"~" access private parameters
-	ros::Publisher publisher = n.advertise<load_uwbdata::uwbdata> ("uwb_distance", 1);
+    ros::Publisher publisher = n.advertise<load_uwbdata::uwbdata> ("uwb_distance", 0);
+    ros::Rate loop_rate(15);
 
 /*
     int node[4];
@@ -101,6 +102,7 @@ int main(int argc, char *argv[])
 			printf("---\n");
 
 			publisher.publish(msg);
+            loop_rate.sleep();
 		}
 
 		++count;

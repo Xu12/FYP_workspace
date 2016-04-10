@@ -61,7 +61,10 @@ def transition_function(xk, uk, del_t):
     u = hstack((a,1))
     #quaternion transition
     w = linalg.norm(array((wx,wy,wz)))
-    r0, r1, r2, r3 = cos(T*w/2),sin(T*w/2)*wx/w,sin(T*w/2)*wy/w,sin(T*w/2)*wz/w,
+    if w==0:
+        r0, r1, r2, r3 = 1, 0, 0, 0
+    else:
+        r0, r1, r2, r3 = cos(T*w/2),sin(T*w/2)*wx/w,sin(T*w/2)*wy/w,sin(T*w/2)*wz/w,
     Aq = array([[r0, -r1, -r2, -r3],
                 [r1,  r0,  r3, -r2],
                 [r2, -r3,  r0,  r1],
