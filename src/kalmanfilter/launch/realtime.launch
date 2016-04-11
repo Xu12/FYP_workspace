@@ -6,16 +6,16 @@
     <include file="$(find load_uwbdata)/launch/uwbpublisher.launch"/>
 
 	<include file="$(find viconxbee)/launch/viconxbee.launch"/>
-<!--
+
     <node pkg="kalmanfilter" type="localization.py" name="filter" output="screen" />
--->
+
 <!--
     <node pkg="kalmanfilter" type="state_plot.py" name="path_plot" />
 -->
-<!--
-    <node name="datarecord" pkg="rosbag" type="record" 
-		    args="-o $(find load_uwbdata)/bag/flytest -a"/>
 
+    <node name="datarecord" pkg="rosbag" type="record" 
+		    args="-o $(find load_uwbdata)/bag/flytest /imu /tf /tf_static /uwb_node/uwb_distance /viconxbee_node/mocap/pose"/>
+<!--
     <node pkg="tf" type="static_transform_publisher" name="vicon_to_local_origin_tf" 
         args="0 0 0 2.40733333 0 0 local_origin vicon 100" />
 -->

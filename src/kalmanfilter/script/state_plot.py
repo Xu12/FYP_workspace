@@ -18,7 +18,7 @@ def vicon_callback(msg):
 
 def uwb_callback(msg):
     path_uwb.header = Header()
-    path_uwb.header.frame_id = "ned"
+    path_uwb.header.frame_id = "local_origin"
     path_uwb.header.stamp = rospy.Time.now()
     path_uwb.poses.append(msg)
     pub2 = rospy.Publisher('path_uwb', Path, queue_size=0)		

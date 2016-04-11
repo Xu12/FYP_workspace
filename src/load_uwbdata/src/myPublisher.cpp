@@ -2,6 +2,7 @@
 
 #include "geometry_msgs/Point.h"
 #include "std_msgs/Float64.h"
+#include "std_msgs/Int32.h"
 
 #include <sstream>
 #include <string.h>
@@ -25,7 +26,7 @@ int main(int argc, char *argv[])
 	ros::init(argc, argv, "myPublisher");
 	ros::NodeHandle n("~");         //"~" access private parameters
     ros::Publisher publisher = n.advertise<load_uwbdata::uwbdata> ("uwb_distance", 0);
-    ros::Rate loop_rate(15);
+    ros::Rate loop_rate(40);
 
 /*
     int node[4];
@@ -95,6 +96,7 @@ int main(int argc, char *argv[])
 			load_uwbdata::uwbdata msg;
 			msg.distance = distance;
 			msg.position = position;
+            msg.nodeID = node[i];
 
 			printf("msgCount: %d\nnodeID: %d\n", count, node[i]);
 			printf("position: [%.3f  %.3f  %.3f]\n", position.x, position.y, position.z);
